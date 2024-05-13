@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  bibliotheca:
+    hostname: bibliotheca
+    image: bibliotheca:dev
+    build:
+      dockerfile: docker/Dockerfile
+      context: ..
+    environment:
+      DB_HOST: bibpostgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: bibliotheca
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@bibpostgres:5432/bibliotheca"
+    ports:
+      - "8051:8051"
+    networks:
+      - db
+  db:
+    container_name: postgres
+    image: postgres:16-alpine
+    hostname: bibpostgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+      POSTGRES_DB: bibliotheca
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # TODO
+  # fix this
+  # minio1:
+  #   image: quay.io/minio/minio:RELEASE.2024-05-10T01-41-38Z
+  #   command: server --console-address ":9001" http://minio{1...4}/data{1...2}
+  #   expose:
+  #     - "9000"
+  #     - "9001"
+  #   # environment:
+  #     # MINIO_ROOT_USER: minioadmin
+  #     # MINIO_ROOT_PASSWORD: minioadmin
+  #   healthcheck:
+  #     test: ["CMD", "mc", "ready", "local"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+  #   hostname: minio1
+  #   volumes:
+  #     - data1-1:/data1
+  #     - data1-2:/data2
+networks:
+  db:
+    driver: bridge
+volumes:
+  db:
+  data1-1:
+  data1-2:

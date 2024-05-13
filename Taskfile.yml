@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  build:
+    cmd: docker compose -f docker/docker-compose.yml build
+  up:
+    cmd: docker compose -f docker/docker-compose.yml up -d
+  down:
+    cmd: docker compose -f docker/docker-compose.yml down
+  logs:
+    cmd: docker compose -f docker/docker-compose.yml logs -f
+    interactive: true
+
+
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
