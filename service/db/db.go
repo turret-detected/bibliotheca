@@ -7,17 +7,12 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// TODO don't user globals
-var Connection *pgx.Conn
-
-func Connect() {
-	// urlExample := "postgres://username:password@localhost:5432/database_name"
+func Connect() (*pgx.Conn, error) {
 	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	Connection = conn
-	// defer conn.Close(context.Background())
+	return conn, nil
 
 	// var name string
 	// var weight int64

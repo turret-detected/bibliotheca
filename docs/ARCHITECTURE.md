@@ -13,14 +13,14 @@ Technical stack:
 erDiagram
 
 FILE {
-    int ID
+    int FileID
     string FileName
     string FileURL
     string PreviewURL
 }
 
 TAG {
-    int ID
+    int TagID
     string Name
     string Description
 }

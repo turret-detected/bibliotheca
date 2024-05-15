@@ -10,10 +10,18 @@ tasks:
     cmd: docker compose -f docker/docker-compose.yml build
   up:
     cmd: docker compose -f docker/docker-compose.yml up -d
+  develop:
+    cmd: docker compose -f docker/docker-compose.yml up -d --watch
   down:
     cmd: docker compose -f docker/docker-compose.yml down
   logs:
     cmd: docker compose -f docker/docker-compose.yml logs -f
+    interactive: true
+  resetdb:
+    prompt: THIS WILL WIPE THE POSTGRES DATABASE! Continue?
+    cmd: docker volume rm bib_postgres
+  postgres:
+    cmd: docker exec -it postgres psql
     interactive: true
 
 

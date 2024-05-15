@@ -7,10 +7,7 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
 
-// TODO don't user globals
-var Client *minio.Client
-
-func Connect() {
+func Connect() (*minio.Client, error) {
 	endpoint := "minio1"
 	useSSL := true
 
@@ -20,8 +17,7 @@ func Connect() {
 		Secure: useSSL,
 	})
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-
-	Client = minioClient
+	return minioClient, nil
 }
