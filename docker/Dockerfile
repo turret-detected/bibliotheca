@@ -22,6 +22,7 @@ WORKDIR /app
 
 # Copy the binary from the build stage
 COPY --from=build /app/bibliotheca .
+COPY --from=build /app/docker/build ./assets
 
 # Set the timezone and install CA certificates
 RUN apk --no-cache add ca-certificates tzdata

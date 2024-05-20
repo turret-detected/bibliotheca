@@ -34,7 +34,11 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Routes
-	e.GET("/", hello)
+	e.GET("/hello", hello)
+
+	// JS
+	e.Static("/assets", "assets")
+	e.File("/", "assets/index.html")
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8051"))

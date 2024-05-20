@@ -3,11 +3,14 @@
 version: '3'
 
 vars:
-  GREETING: Hello, World!
+  VERSION: v0.0.1
 
 tasks:
   build:
-    cmd: docker compose -f docker/docker-compose.yml build
+    cmds:
+    - bun build ./frontend/src/main --outfile=bundle.js --outdir ./docker/build --target browser
+    - cp ./frontend/index.html ./docker/build/index.html
+    - docker compose -f docker/docker-compose.yml build
   up:
     cmd: docker compose -f docker/docker-compose.yml up -d
   develop:
@@ -23,9 +26,14 @@ tasks:
   postgres:
     cmd: docker exec -it postgres psql
     interactive: true
+  rebuild:
+    cmds:
+      - task: down
+      - task: build
+      - task: up
 
 
   default:
     cmds:
-      - echo "{{.GREETING}}"
+      - echo "Version {{.VERSION}}"
     silent: true
