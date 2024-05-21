@@ -9,6 +9,7 @@ tasks:
   build:
     cmds:
     - bun build ./frontend/src/main --outfile=bundle.js --outdir ./docker/build --target browser
+    # - bun vite build ./frontend --outdir ./docker/build --base /assets
     - cp ./frontend/index.html ./docker/build/index.html
     - docker compose -f docker/docker-compose.yml build
   up:

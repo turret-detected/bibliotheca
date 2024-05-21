@@ -46,4 +46,4 @@ dist-ssr
 *.sw?
 
 # docker build
-build
+**/build
